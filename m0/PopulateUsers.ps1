@@ -1,24 +1,36 @@
-#Install AzureRM if doesn't exist
-if(-not (Get-Module AzureRM)){
-    Install-Module -Name AzureRM -Force
+#Install AzureAD if doesn't exist
+if(-not (Get-Module AzureAD)){
+    Install-Module -Name AzureAD -Force
 }
 
 #Log into Azure
-Add-AzureRMAccount
+Connect-AzureAD
 
 $data = import-csv -Path .\Fake_User_data.csv
 $domain = "ContosoNed.onmicrosoft.com"
-$password = "agxsFX72xwsSAi"
+$PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
+$PasswordProfile.Password = "agxsFX72xwsSAi"
 
 foreach($item in $data){
     $user = @{
-        DisplayName = "$(item.GivenName) $($item.Surname)"
+        City = $item.City
+        Country = $item.Country
+        Department = $item.Department
+        DisplayName = "$($item.GivenName) $($item.Surname)"
+        GivenName = $item.GivenName
+        JobTitle = $item.Occupation
         UserPrincipalName = "$($item.Username)@$domain"
-        Password = ConvertTo-SecureString $password –asplaintext –force
+        PasswordProfile = $PasswordProfile
+        PostalCode = $item.ZipCode
+        State = $item.State
+        StreetAddress = $item.StreetAddress
+        Surname = $item.Surname
+        TelephoneNumber = $item.TelephoneNumber
         MailNickname = $item.Username
+        AccountEnabled = $true
     }
 
-    New-AzureRMADUser @user
+    New-AzureADUser @user
 }
 
 
