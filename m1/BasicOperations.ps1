@@ -3,8 +3,11 @@ if(-not (Get-Module AzureAD)){
     Install-Module -Name AzureAD -Force
 }
 
+#Get credentials to connect
+$AzureADCredentials = Get-Credential -Message "Credentials to connect to Azure AD"
+
 #Connect to the Azure AD tenant
-Connect-AzureAD
+Connect-AzureAD -Credential $AzureADCredentials
 
 #Get info about the current session
 Get-AzureADCurrentSessionInfo
