@@ -1,7 +1,9 @@
 #Install the AzureAD Module
-if(-not (Get-Module AzureAD)){
-    Install-Module -Name AzureAD -Force
-}
+Get-Module AzureAD
+
+Find-Module AzureAD
+
+Install-Module -Name AzureAD
 
 #Get credentials to connect
 $AzureADCredentials = Get-Credential -Message "Credentials to connect to Azure AD"
@@ -16,24 +18,6 @@ Get-AzureADCurrentSessionInfo
 Get-AzureADTenantDetail
 
 Get-AzureADDomain
-
-#Working with roles
-Get-AzureADDirectoryRole
-
-$CompanyAdminRole = Get-AzureADDirectoryRole | Where-Object {$_.DisplayName -eq "Company Administrator"}
-
-Get-AzureADDirectoryRoleMember -ObjectId $CompanyAdminRole.ObjectId
-
-Get-AzureADDirectoryRoleTemplate
-
-$BillingAdminRoleTemplate = Get-AzureADDirectoryRoleTemplate | Where-Object {$_.DisplayName -eq "Helpdesk Administrator"}
-
-#Activate the role
-$BillingAdminRole = Enable-AzureADDirectoryRole -RoleTemplateId $BillingAdminRoleTemplate.ObjectId
-
-$user = Get-AzureADUser -Top 1
-
-Add-AzureADDirectoryRoleMember -RefObjectId $user.ObjectId -ObjectId $BillingAdminRole.ObjectId
 
 
 
