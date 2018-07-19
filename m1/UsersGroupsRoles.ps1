@@ -7,11 +7,11 @@ Get-AzureADDirectoryRoleMember -ObjectId $CompanyAdminRole.ObjectId
 
 Get-AzureADDirectoryRoleTemplate
 
-$BillingAdminRoleTemplate = Get-AzureADDirectoryRoleTemplate | Where-Object {$_.DisplayName -eq "Helpdesk Administrator"}
+$SecurityAdminRoleTemplate = Get-AzureADDirectoryRoleTemplate | Where-Object {$_.DisplayName -eq "Security Administrator"}
 
 #Activate the role
-$BillingAdminRole = Enable-AzureADDirectoryRole -RoleTemplateId $BillingAdminRoleTemplate.ObjectId
+$SecurityAdminRole = Enable-AzureADDirectoryRole -RoleTemplateId $SecurityAdminRoleTemplate.ObjectId
 
 $user = Get-AzureADUser -Top 1
 
-Add-AzureADDirectoryRoleMember -RefObjectId $user.ObjectId -ObjectId $BillingAdminRole.ObjectId
+Add-AzureADDirectoryRoleMember -RefObjectId $user.ObjectId -ObjectId $SecurityAdminRole.ObjectId

@@ -1,10 +1,9 @@
 #Install the AzureAD Module
-Get-Module AzureAD
-
 Find-Module AzureAD
 
 Install-Module -Name AzureAD
 
+Import-Module -Name AzureAD
 #Get credentials to connect
 $AzureADCredentials = Get-Credential -Message "Credentials to connect to Azure AD"
 
