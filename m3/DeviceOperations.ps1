@@ -5,8 +5,17 @@ Connect-AzureAD
 Get-Command -Module AzureAD "*device*"
 
 #Get all existing Azure AD devices
-Get-AzureADDevice -All
+Get-AzureADDevice | Format-List
 
-#Get Device configuration info
-$device = Get-AzureADDevice -All -Top 1
-Get-AzureADDeviceConfiguration
+#Get device owner and users
+$device = Get-AzureADDevice
+
+Get-AzureADDeviceRegisteredOwner -ObjectId $device.ObjectId
+Get-AzureADDeviceRegisteredUser -ObjectId $device.ObjectId
+
+$user = Get-AzureADUser -SearchString "Arthur Dent"
+
+Add-AzureADDeviceRegisteredUser -ObjectId $device.ObjectId -RefObjectId $user.ObjectId
+
+#Disable a device
+Set-AzureADDevice -AccountEnabled:$false -ObjectId $device.ObjectId
